@@ -5,7 +5,12 @@ public class Assignment12Part1 {
     public static void main(String[] args) {
 
         Programm programm = new Programm();
-        programm.init();
-        programm.start();
+        if (args.length > 0) {
+            programm.findSilhouettes(args[0]);
+        } else {
+            programm.findSilhouettes("assets/test.jpg");
+        }
+        programm.initFrame();
+
     }
 }
