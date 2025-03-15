@@ -34,6 +34,10 @@ public class Programm {
         frame.add(panel, BorderLayout.CENTER);
     }
 
+    public FindSilhouettes getSilhouettes() {
+        return silhouettes;
+    }
+
     /**
      * Initializes the frame by setting its size, default close operation, and visibility.
      * Adds a label to display the silhouettes count and calls the drawImage method to display images.
@@ -70,7 +74,8 @@ public class Programm {
      */
     private void drawImage(){
         Image scaledImage = image.getScaledInstance(400, 300, Image.SCALE_SMOOTH);
-        Image scaledImage2 = silhouettes.createImageWithRedBorder().getScaledInstance(400, 300, Image.SCALE_SMOOTH);
+        Image scaledImage2 = silhouettes.createImageWithRedBorder()
+                .getScaledInstance(400, 300, Image.SCALE_SMOOTH);
         ImageIcon imageIcon = new ImageIcon(scaledImage);
         ImageIcon imageIcon2 = new ImageIcon(scaledImage2);
         JLabel imageLabel = new JLabel(imageIcon);
@@ -84,5 +89,12 @@ public class Programm {
         panel.add(imageLabel2, gridBagConstraints);
         frame.revalidate();
         frame.repaint();
+
+//        try {
+//            File outputfile = new File("assets/output.jpg");
+//            ImageIO.write(silhouettes.createImageWithRedBorder(), "jpg", outputfile);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 }
