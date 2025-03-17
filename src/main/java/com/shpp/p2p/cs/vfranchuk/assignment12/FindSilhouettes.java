@@ -89,7 +89,6 @@ public class FindSilhouettes {
      * Creates a binary matrix representing the image.
      * @param width - width of the image
      * @param height - height of the image
-     * @return - binary matrix where true represents silhouette pixels and false represents background pixels
      */
     private void makeImageMatrix(int width, int height){
         double averageBrightness = getAverageBrightness(image);
