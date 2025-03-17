@@ -13,20 +13,25 @@ import java.io.IOException;
  */
 public class Programm {
 
-    private JFrame frame;
-    private JPanel panel;
-    private GridBagConstraints gridBagConstraints;
-    private static final int WIDTH = 1000;
-    private static final int HEIGHT = 1000;
+    // The frame to display the images
+    private final JFrame frame;
+    // The panel to add the images to
+    private final JPanel panel;
+    // The constraints for the panel
+    private final GridBagConstraints gridBagConstraints;
 
-    private BufferedImage image;
-    private FindSilhouettes silhouettes;
+    // The image to display
+    private final BufferedImage image;
+    // The object to find silhouettes
+    private final FindSilhouettes silhouettes;
 
     /**
      * Constructor initializes the frame and panel.
      * Adds the panel to the frame.
      */
-    public Programm(){
+    public Programm(BufferedImage image, FindSilhouettes silhouettes) {
+        this.image = image;
+        this.silhouettes = silhouettes;
         frame = new JFrame("Assignment 12 Part 1");
         panel = new JPanel(new GridBagLayout());
         gridBagConstraints = new GridBagConstraints();
@@ -34,47 +39,27 @@ public class Programm {
         frame.add(panel, BorderLayout.CENTER);
     }
 
-    public FindSilhouettes getSilhouettes() {
-        return silhouettes;
-    }
-
     /**
      * Initializes the frame by setting its size, default close operation, and visibility.
      * Adds a label to display the silhouettes count and calls the drawImage method to display images.
      */
-    public void initFrame(){
-        JLabel label = new JLabel("Silhouettes count: ");
+    public Programm initFrame(){
+        JLabel label = new JLabel("Silhouettes count: " + silhouettes.getSilhouettesCount());
         frame.add(label, BorderLayout.NORTH);
-        frame.setSize(WIDTH,HEIGHT);
+        frame.setSize(Constants.WIDTH,Constants.HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        drawImage();
-    }
-
-    /**
-     * Finds silhouettes in the image and displays the original image
-     * and the image with red borders around the detected silhouettes.
-     * @param path - path to the image
-     */
-    public void findSilhouettes(String path){
-        try {
-            // Load the image
-            image = ImageIO.read(new File(path));
-            silhouettes = new FindSilhouettes(image);
-            silhouettes.find();
-            System.out.println(silhouettes.getSilhouettesCount());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return this;
     }
 
     /**
      * Draws the original image and the image with red borders around the detected silhouettes.
      * Scales the images, creates ImageIcons, and adds them to the panel.
      */
-    private void drawImage(){
+    public void drawImage(){
         Image scaledImage = image.getScaledInstance(400, 300, Image.SCALE_SMOOTH);
-        Image scaledImage2 = silhouettes.createImageWithRedBorder()
+
+        Image scaledImage2 = new MarkingSilhouettes(silhouettes).createImageWithRedBorder()
                 .getScaledInstance(400, 300, Image.SCALE_SMOOTH);
         ImageIcon imageIcon = new ImageIcon(scaledImage);
         ImageIcon imageIcon2 = new ImageIcon(scaledImage2);
@@ -89,12 +74,5 @@ public class Programm {
         panel.add(imageLabel2, gridBagConstraints);
         frame.revalidate();
         frame.repaint();
-
-//        try {
-//            File outputfile = new File("assets/output.jpg");
-//            ImageIO.write(silhouettes.createImageWithRedBorder(), "jpg", outputfile);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 }
